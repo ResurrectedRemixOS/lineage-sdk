@@ -363,6 +363,11 @@ public class LineageDatabaseHelper extends SQLiteOpenHelper{
         }
     }
 
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Do nothing. A lower database version must not throw and stop boot.
+    }
+
     private void moveSettingsToNewTable(SQLiteDatabase db,
                                         String sourceTable, String destTable,
                                         String[] settingsToMove, boolean doIgnore) {
