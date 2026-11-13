@@ -273,6 +273,13 @@ public class NetworkTraffic extends TextView {
                         && (!mShowUp || mTxKbps < mAutoHideThreshold)
                         && (!mShowDown || mRxKbps < mAutoHideThreshold);
 
+                if (Log.isLoggable(TAG, Log.DEBUG)) {
+                    Log.d(TAG, "view=" + mViewPosition + " position=" + mPosition
+                            + " mode=" + mMode + " connected=" + isConnectionAvailable()
+                            + " mobileOnly=" + mMobileOnly + " onMobile=" + mOnMobile
+                            + " hide=" + shouldHide + " visible=" + mNetworkTrafficIsVisible
+                            + " user=" + mContext.getUserId());
+                }
                 if (!enabled || shouldHide) {
                     setVisibility(GONE);
                 } else {
