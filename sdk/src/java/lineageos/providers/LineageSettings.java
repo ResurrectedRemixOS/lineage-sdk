@@ -2975,6 +2975,90 @@ public final class LineageSettings {
                 new InclusiveIntegerRangeValidator(0, 2);
 
         /**
+         * Network traffic indicator style
+         * 0 = Classic, 1 = Inline, 2 = Pill, 3 = Dominant, 4 = Meter, 5 = Sparkline,
+         * 6 = Readout, 7 = Ring
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_STYLE = "network_traffic_style";
+
+        /** @hide */
+        public static final Validator NETWORK_TRAFFIC_STYLE_VALIDATOR =
+                new InclusiveIntegerRangeValidator(0, 7);
+
+        /**
+         * Network traffic arrow icon set, 0 to 7
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_ARROWS = "network_traffic_arrows";
+
+        /** @hide */
+        public static final Validator NETWORK_TRAFFIC_ARROWS_VALIDATOR =
+                new InclusiveIntegerRangeValidator(0, 7);
+
+        /**
+         * Network traffic indicator size in percent, 60 to 160
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_SIZE = "network_traffic_size";
+
+        /** @hide */
+        public static final Validator NETWORK_TRAFFIC_SIZE_VALIDATOR =
+                new InclusiveIntegerRangeValidator(60, 160);
+
+        /**
+         * Network traffic indicator color
+         * 0 = Status bar, 1 = Accent, 2 = By speed
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_COLOR = "network_traffic_color";
+
+        /** @hide */
+        public static final Validator NETWORK_TRAFFIC_COLOR_VALIDATOR =
+                new InclusiveIntegerRangeValidator(0, 2);
+
+        /**
+         * Whether the arrow of an idle direction dims
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_LIVE_ARROWS = "network_traffic_live_arrows";
+
+        /** @hide */
+        public static final Validator NETWORK_TRAFFIC_LIVE_ARROWS_VALIDATOR =
+                sBooleanValidator;
+
+        /**
+         * Network traffic auto hide threshold in kB/s, 1 to 100
+         * 0 = the default for the chosen units
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD = "network_traffic_autohide_threshold";
+
+        /** @hide */
+        public static final Validator NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD_VALIDATOR =
+                new InclusiveIntegerRangeValidator(0, 100);
+
+        /**
+         * Network traffic refresh interval in seconds, 1 to 4
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_REFRESH = "network_traffic_refresh";
+
+        /** @hide */
+        public static final Validator NETWORK_TRAFFIC_REFRESH_VALIDATOR =
+                new InclusiveIntegerRangeValidator(1, 4);
+
+        /**
+         * Whether to show network traffic only on mobile data
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_MOBILE_ONLY = "network_traffic_mobile_only";
+
+        /** @hide */
+        public static final Validator NETWORK_TRAFFIC_MOBILE_ONLY_VALIDATOR =
+                sBooleanValidator;
+
+        /**
          * Trust warnings status
          *
          * Stores flags for each feature
@@ -3035,6 +3119,14 @@ public final class LineageSettings {
             VALIDATORS.put(NETWORK_TRAFFIC_HIDE_ARROWS, NETWORK_TRAFFIC_HIDE_ARROWS_VALIDATOR);
             VALIDATORS.put(NETWORK_TRAFFIC_UNITS, NETWORK_TRAFFIC_UNITS_VALIDATOR);
             VALIDATORS.put(NETWORK_TRAFFIC_SHOW_UNITS, NETWORK_TRAFFIC_SHOW_UNITS_VALIDATOR);
+            VALIDATORS.put(NETWORK_TRAFFIC_STYLE, NETWORK_TRAFFIC_STYLE_VALIDATOR);
+            VALIDATORS.put(NETWORK_TRAFFIC_ARROWS, NETWORK_TRAFFIC_ARROWS_VALIDATOR);
+            VALIDATORS.put(NETWORK_TRAFFIC_SIZE, NETWORK_TRAFFIC_SIZE_VALIDATOR);
+            VALIDATORS.put(NETWORK_TRAFFIC_COLOR, NETWORK_TRAFFIC_COLOR_VALIDATOR);
+            VALIDATORS.put(NETWORK_TRAFFIC_LIVE_ARROWS, NETWORK_TRAFFIC_LIVE_ARROWS_VALIDATOR);
+            VALIDATORS.put(NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD, NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD_VALIDATOR);
+            VALIDATORS.put(NETWORK_TRAFFIC_REFRESH, NETWORK_TRAFFIC_REFRESH_VALIDATOR);
+            VALIDATORS.put(NETWORK_TRAFFIC_MOBILE_ONLY, NETWORK_TRAFFIC_MOBILE_ONLY_VALIDATOR);
             VALIDATORS.put(TRUST_WARNINGS, TRUST_WARNINGS_VALIDATOR);
             VALIDATORS.put(VOLUME_PANEL_ON_LEFT, VOLUME_PANEL_ON_LEFT_VALIDATOR);
         }
