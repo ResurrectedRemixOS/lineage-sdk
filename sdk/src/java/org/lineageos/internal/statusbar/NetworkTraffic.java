@@ -57,6 +57,7 @@ public class NetworkTraffic extends TextView {
     private static final int POSITION_START = 0;
     private static final int POSITION_CENTER = 1;
     private static final int POSITION_END = 2;
+    public static final int POSITION_SHADE_HEADER = 3;
 
     private static final int MESSAGE_TYPE_PERIODIC_REFRESH = 0;
     private static final int MESSAGE_TYPE_UPDATE_VIEW = 1;
@@ -262,7 +263,9 @@ public class NetworkTraffic extends TextView {
             }
 
             private void displayStatsAndReschedule() {
-                final boolean enabled = mMode != MODE_DISABLED && mPosition == mViewPosition
+                final boolean enabled = mMode != MODE_DISABLED
+                        && (mPosition == mViewPosition
+                                || mViewPosition == POSITION_SHADE_HEADER)
                         && isConnectionAvailable() && (!mMobileOnly || mOnMobile);
                 mShowUp = mMode == MODE_UPSTREAM_ONLY || mMode == MODE_UPSTREAM_AND_DOWNSTREAM;
                 mShowDown = mMode == MODE_DOWNSTREAM_ONLY || mMode == MODE_UPSTREAM_AND_DOWNSTREAM;
