@@ -39,6 +39,7 @@ import org.lineageos.platform.internal.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.stream.Stream;
 
 public class NetworkTraffic extends TextView {
@@ -143,6 +144,9 @@ public class NetworkTraffic extends TextView {
     private boolean mLiveArrows = true;
     private int mRefreshMs = 2000;
     private boolean mMobileOnly;
+    private boolean mPreview;
+    private int mPreviewTick;
+    private final Random mRandom = new Random();
     private volatile boolean mOnMobile;
     private boolean mShowUp;
     private boolean mShowDown;
@@ -222,6 +226,14 @@ public class NetworkTraffic extends TextView {
                 if (timeDelta < mRefreshMs * 0.95f) {
                     return;
                 }
+                if (mPreview) {
+                    previewStats();
+                    mLastUpdateTime = now;
+                    mTxHistory[mHistoryPos] = mTxKbps;
+                    mRxHistory[mHistoryPos] = mRxKbps;
+                    mHistoryPos = (mHistoryPos + 1) % HISTORY;
+                    return;
+                }
                 // Sum tx and rx bytes from all sources of interest
                 long txBytes = 0;
                 long rxBytes = 0;
@@ -263,13 +275,12 @@ public class NetworkTraffic extends TextView {
             }
 
             private void displayStatsAndReschedule() {
-                final boolean enabled = mMode != MODE_DISABLED
-                        && (mPosition == mViewPosition
-                                || mViewPosition == POSITION_SHADE_HEADER)
-                        && isConnectionAvailable() && (!mMobileOnly || mOnMobile);
+                final boolean enabled = mMode != MODE_DISABLED && (mPreview
+                        || ((mPosition == mViewPosition || mViewPosition == POSITION_SHADE_HEADER)
+                                && isConnectionAvailable() && (!mMobileOnly || mOnMobile)));
                 mShowUp = mMode == MODE_UPSTREAM_ONLY || mMode == MODE_UPSTREAM_AND_DOWNSTREAM;
                 mShowDown = mMode == MODE_DOWNSTREAM_ONLY || mMode == MODE_UPSTREAM_AND_DOWNSTREAM;
-                final boolean shouldHide = mAutoHide
+                final boolean shouldHide = !mPreview && mAutoHide
                         && (!mShowUp || mTxKbps < mAutoHideThreshold)
                         && (!mShowDown || mRxKbps < mAutoHideThreshold);
 
@@ -843,7 +854,7 @@ public class NetworkTraffic extends TextView {
     }
 
     private void manageNetworkCallbacks() {
-        if (mMode == MODE_DISABLED) {
+        if (mMode == MODE_DISABLED || mPreview) {
             // Unregister callbacks if disabling
             unregisterNetworkCallbacks();
             return;
@@ -904,6 +915,33 @@ public class NetworkTraffic extends TextView {
             };
 
             mConnectivityManager.registerDefaultNetworkCallback(mDefaultNetworkCallback);
+        }
+    }
+
+    public void setPreview(boolean preview) {
+        mPreview = preview;
+        updateSettings();
+    }
+
+    private void previewStats() {
+        final float r = mRandom.nextFloat();
+        switch ((mPreviewTick++ / 8) % 4) {
+            case 0:
+                mRxKbps = (long) (70000 + r * 60000);
+                mTxKbps = (long) (500 + r * 900);
+                break;
+            case 1:
+                mTxKbps = (long) (18000 + r * 26000);
+                mRxKbps = (long) (250 + r * 700);
+                break;
+            case 2:
+                mTxKbps = (long) (r * 4);
+                mRxKbps = (long) (r * 6);
+                break;
+            default:
+                mRxKbps = (long) (r < 0.35f ? 1500 + r * 12000 : 40 + r * 400);
+                mTxKbps = mRxKbps / 16 + 8;
+                break;
         }
     }
 
